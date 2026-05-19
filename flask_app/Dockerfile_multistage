@@ -6,16 +6,15 @@ WORKDIR /app
 
 COPY requirements.txt .
 
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt --target /app/packages
 
 COPY . .
-
-# CMD ["run.py"]
-# EXPOSE 80
 
 #Stage2 Distorless run time
 
 FROM gcr.io/distroless/python3
 WORKDIR /app
-COPY --from=builder /app/app
+COPY --from=builder /app/packages /app/packages
+COPY --from=builder /app .
+ENV PYTHONPATH=/app/packages
 CMD ["run.py"]
