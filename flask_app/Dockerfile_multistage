@@ -1,0 +1,8 @@
+FROM gcr.io/distroless/python3
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt --target /app/package
+
+copy . .
+# CMD ["python", "requirements.txt"]
+# EXPOSE 80
