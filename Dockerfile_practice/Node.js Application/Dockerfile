@@ -1,6 +1,6 @@
 FROM node:latest
 WORKDIR /app
-COPY . /usr/local/lib/node_modules/
+COPY package.json .
 RUN npm install --omit=dev
 COPY . .
 CMD ["node", "server.js"]
