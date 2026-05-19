@@ -1,4 +1,4 @@
-FROM node:1.0.0
+FROM node:latest
 #WORKDIR /app
 COPY . /usr/local/lib/node_modules/
 RUN npm install --omit=dev
