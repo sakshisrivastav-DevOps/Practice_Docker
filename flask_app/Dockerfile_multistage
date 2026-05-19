@@ -1,6 +1,21 @@
+#stage 1 Build dependency
+FROM python:3.11 AS builder
+
+#Current directory becomes /app
+WORKDIR /app
+
+COPY requirements.txt .
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+# CMD ["run.py"]
+# EXPOSE 80
+
+#Stage2 Distorless run time
+
 FROM gcr.io/distroless/python3
 WORKDIR /app
-COPY requirements.txt .
-RUN pip install -r requirements.txt --target /app/package
-CMD ["python", "requirements.txt"]
-EXPOSE 80
+COPY --from=builder /app/app
+CMD ["run.py"]
