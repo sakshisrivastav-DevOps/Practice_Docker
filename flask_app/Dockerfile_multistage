@@ -8,13 +8,26 @@ COPY requirements.txt .
 
 RUN pip install --no-cache-dir -r requirements.txt --target /app/packages
 
+#copy ALL local project files such as run.py etc to current directory (/app)
 COPY . .
 
 #Stage2 Distorless run time
 
 FROM gcr.io/distroless/python3
 WORKDIR /app
+
+#COPY --from=<stage> <source_path> <destination_path>, destination path you can changed
 COPY --from=builder /app/packages /app/packages
+
+# if COPY --from=builder /app/packages /app/libraries, then
+# ENV PYTHONPATH=/app/libraries
+
+#copy app code
 COPY --from=builder /app .
+
+#search libraries inside /app/packages
+
 ENV PYTHONPATH=/app/packages
+
+#Distroless Python image internally executes python run.py
 CMD ["run.py"]
