@@ -21,6 +21,7 @@ flask-app-ecs/
 └── Dockerfile-multi       # Multistage build with distroless
 
 ************************************************************
+docker pull mysql:latest
 docker run -d -e MYSQL_ROOT_PASSWORD=root mysql:latest
 docker exec -it containerid bash
 mysql -u root -p
@@ -28,12 +29,25 @@ show databses;
 create databse imp_data;
 show databases;
 exit
+exit
 docker stop containerid
 docker start containerid
 docker exec -it containerid bash
 mysql -u root -p
 show databases;
+exit
+exit
 docker stop containerid && docker rm containerid
+
+#now to check if imp_data exist or not.
+docker run -d -e MYSQL_ROOT_PASSWORD=root mysql:latest
+docker exec -it containerid bash
+mysql -u root -p
+show databses;
+exit 
+exit
+#here imp_data is not visible
+
 
 #Understanding Docker volume concept
 
@@ -42,6 +56,8 @@ docker volume create mysql-data
 docker volume ls
 docker volume inspect mysql-data
 docker run -d -v mysql-data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=root mysql:latest
+#your mysql-data is now stored in the mysql-data volume, not inside the container
+
 docker ps
 docker exec -it cont bash
 mysql -u root -p
@@ -51,7 +67,10 @@ exit
 exit
 docker stop containerid && docker rm containerid
 
+#To verify
+
 docker run -d -v mysql-data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=root mysql:latest
 docker ps
 docker exec -it cont bash
+mysql -u root -p
 show databases
