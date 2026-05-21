@@ -6,10 +6,15 @@ services:
      image: mysql
      container_name: mysql-db
      environment:
-       MYSQL_ROOT_PASSWORD: Test@123
-       MYSQL_DATABASE: testdb
+       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+       MYSQL_DATABASE: ${MYSQL_DATABASE}
      ports:
-       - "3606:3606"
+       - "${MYSQL_PORT}:3306"
+     healthcheck:
+        test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
      networks:
        - app-network
 
