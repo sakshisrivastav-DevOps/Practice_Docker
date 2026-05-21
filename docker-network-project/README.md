@@ -36,6 +36,7 @@ apt update && apt install -y iputils-ping
 ping backend
 
 #Frontend container sends request internally to backend container
+apt update && apt install -y curl
 curl http://backend:5000
 
 #Important
@@ -51,3 +52,45 @@ curl http://backend:5000
 | --------------------- | -------------- |
 | Browser → Container   | Port mapping   |
 | Container → Container | Docker network |
+
+
+
+#2nd Project with combination of Frontend, backend and mysql
+
+docker run -d --name mysql-db --network=networkpractice -e MYSQL_ROOT_PASSWORD=Test@123 -e MYSQL_DATABASE=testdb -p 3306:3306 mysql:8
+
+docker ps
+
+#All containers are inside same virtual network
+docker network inspect networkpractice
+
+docker logs mysql-db
+docker exec -it backtendcontainerid bash
+
+#Docker DNS resolves backend container name to container IP
+ping fronendcontainerid
+
+#If ping command not available
+cat /etc/os-release
+
+#If Debian/Ubuntu install ping utility
+apt update && apt install -y iputils-ping
+
+ping mysql-db
+
+
+#Test from browser (final check)
+http://localhost:8080
+
+http://localhost:5000
+
+
+Browser
+   ↓
+Frontend (nginx:8080)
+   ↓
+Backend (Flask:5000)
+   ↓
+MySQL (mysql-db:3306)
+
+All connected using: networkpractice (bridge network)
