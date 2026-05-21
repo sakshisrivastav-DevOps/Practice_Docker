@@ -94,3 +94,6 @@ Backend (Flask:5000)
 MySQL (mysql-db:3306)
 
 All connected using: networkpractice (bridge network)
+
+
+**************************Docker Compose****************

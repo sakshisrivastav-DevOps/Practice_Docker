@@ -1,0 +1,36 @@
+version: 3.8
+#each container = a service
+services:
+
+   mysql:
+     image: mysql
+     container_name: mysql-db
+     environment:
+       MYSQL_ROOT_PASSWORD: Test@123
+       MYSQL_DATABASE: testdb
+     ports:
+       - "3606:3606"
+     networks:
+       - app-network
+
+   backend:
+     build: ./backend
+     container_name: backend
+     ports:
+      - "5000:5000"
+     depends_on: mysql
+     #Start mysql FIRST, then backend.
+     networks:
+      - app-network
+   frontend:
+     build: ./frontend
+     container_name: frontend
+     depends_on: backend
+     ports:
+      - "8080:80"
+     networks:
+      - app-network
+
+#Docker creates a single shared bridge network, So all services can talk.
+networks:
+     - app-network
