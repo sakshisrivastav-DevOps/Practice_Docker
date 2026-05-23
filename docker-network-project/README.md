@@ -108,3 +108,10 @@ Backend (Flask:5000)
 MySQL (mysql-db:3306)
 
 All connected using: networkpractice (bridge network)
+
+
+#Sign in docker hub
+docker images
+docker login
+docker image tag imagename /yourusername/imagename
+docker push /yourusername/imagename
